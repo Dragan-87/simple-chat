@@ -21,6 +21,7 @@ from authService.views import login__view
 
 
 urlpatterns = [
+    path('', login__view),
     path('admin/', admin.site.urls),
     path('chat/', index),
     path('login/', login__view),

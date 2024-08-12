@@ -35,8 +35,11 @@
         <div class="mdl-layout__header-row">
           <!-- Title -->
           <span class="mdl-layout-title">
-            {% if request.user.is_authenticated %} Welcome, {{
-            request.user.username }} {% else %} Welcome, Guest {% endif %}
+            {% if request.user.is_authenticated %} 
+            Welcome, {{request.user.username }} 
+            {% else %} 
+            Welcome, Guest 
+            {% endif %}
           </span>
           <!-- Add spacer, to align navigation to the right -->
           <div class="mdl-layout-spacer"></div>

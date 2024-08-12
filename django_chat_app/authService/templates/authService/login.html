@@ -24,7 +24,6 @@
         margin-top: 50px;
       }
     </style>
-    <!-- Always shows a header, even in smaller screens. -->
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
@@ -46,6 +45,12 @@
       </div>
       <main class="mdl-layout__content">
         <div class="page-content">
+          {% if request.user.username %}
+          <span
+            >Du bist bereits eingelogt, <a href="/chat/">hier</a> geht es zu den
+            Chats</span
+          >
+          {% else %}
           <mat-card>
             <form action="/login/" method="post">
               {% csrf_token %}
@@ -63,13 +68,16 @@
                 Login
               </button>
               {% if loginFail %}
-              <p>Invalid username or password</p>
+              <p style="color: red; font-size: 14px">
+                Invalid username or password
+              </p>
               {% endif %}
               <span></span>
             </form>
           </mat-card>
         </div>
       </main>
+      {% endif %}
     </div>
   </body>
 </html>
