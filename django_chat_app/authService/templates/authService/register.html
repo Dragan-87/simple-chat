@@ -8,6 +8,7 @@
         type="text"
         id="username"
         name="username"
+        placeholder="Username"
       />
       <label class="mdl-textfield__label" for="username">Username</label>
     </div>
@@ -17,6 +18,7 @@
         type="text"
         id="first_name"
         name="first_name"
+        placeholder="First Name"
       />
       <label class="mdl-textfield__label" for="first_name">First Name</label>
     </div>
@@ -26,6 +28,7 @@
         type="text"
         id="last_name"
         name="last_name"
+        placeholder="Last Name"
       />
       <label class="mdl-textfield__label" for="last_name">Last Name</label>
     </div>
@@ -35,6 +38,7 @@
         type="email"
         id="email"
         name="email"
+        placeholder="Email"
       />
       <label class="mdl-textfield__label" for="email">Email</label>
     </div>
@@ -44,18 +48,40 @@
         type="password"
         id="password"
         name="password"
+        placeholder="Password"
       />
       <label class="mdl-textfield__label" for="password">Password</label>
     </div>
     <!-- Accent-colored raised button with ripple -->
-    <button
-      class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent button-register"
-    >
-      Button
-    </button>
+    <div class="button-container">
+      <button
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent button-register"
+        type="submit"
+      >
+        Button
+      </button>
+      <button
+        type="button"
+        id="clearButton"
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-register"
+        onclick="clearForm()"
+      >
+        Clear
+      </button>
+    </div>
     {% if registerFail %}
     <span>{{registerFail}}</span>
     {% endif %}
   </form>
 </div>
+<script>
+  function clearForm() {
+    document.getElementById('username').value = '';
+    document.getElementById('first_name').value = '';
+    document.getElementById('last_name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('password').value = '';
+  }
+</script>
+
 {% endblock %}
