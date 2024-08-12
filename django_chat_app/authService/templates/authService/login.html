@@ -1,83 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lgoin</title>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    />
-    <link
-      rel="stylesheet"
-      href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"
-    />
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  </head>
-  <body>
-    <style>
-      .page-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin-top: 50px;
-      }
-    </style>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-          <!-- Title -->
-          <span class="mdl-layout-title">Login</span>
-          <!-- Add spacer, to align navigation to the right -->
-          <div class="mdl-layout-spacer"></div>
-          <!-- Navigation. We hide it in small screens. -->
-        </div>
-      </header>
-      <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Login</span>
-        <nav class="mdl-navigation">
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
-      </div>
-      <main class="mdl-layout__content">
-        <div class="page-content">
-          {% if request.user.username %}
-          <span
-            >Du bist bereits eingelogt, <a href="/chat/">hier</a> geht es zu den
-            Chats</span
+
+{% extends "base.html" %}
+{% block content %}
+<div class="page-content page-content-login">
+      {% if request.user.username %}
+      <span
+        >Du bist bereits eingelogt, <a href="/chat/">hier</a> geht es zu den
+        Chats</span
+      >
+      {% else %}
+      <mat-card>
+        <form action="/login/" method="post">
+          {% csrf_token %}
+          <mat-form-field>
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" />
+          </mat-form-field>
+          <mat-form-field>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" />
+          </mat-form-field>
+          <button
+            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
           >
-          {% else %}
-          <mat-card>
-            <form action="/login/" method="post">
-              {% csrf_token %}
-              <mat-form-field>
-                <label for="username">Username</label>
-                <input type="text" name="username" id="username" />
-              </mat-form-field>
-              <mat-form-field>
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" />
-              </mat-form-field>
-              <button
-                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-              >
-                Login
-              </button>
-              {% if loginFail %}
-              <p style="color: red; font-size: 14px">
-                Invalid username or password
-              </p>
-              {% endif %}
-              <span></span>
-            </form>
-          </mat-card>
-        </div>
-      </main>
-      {% endif %}
+            Login
+          </button>
+          {% if loginFail %}
+          <p style="color: red; font-size: 14px">
+            Invalid username or password
+          </p>
+          {% endif %}
+        </form>
+        <span>Hier <a href="/register/">Regestrieren</a></span>
+      </mat-card>
     </div>
-  </body>
-</html>
+  </main>
+  {% endif %}
+</div>
+{% endblock %}
