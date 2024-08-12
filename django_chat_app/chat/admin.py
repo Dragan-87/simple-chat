@@ -1,11 +1,12 @@
 from django.contrib import admin
-from .models import Message
+from .models import Message, Chat
 
-""" class MessageAdmin(admin.ModelAdmin):
-    fields = ('test', 'created_at', 'author', 'receiver')
-    list_display = ('test', 'created_at', 'author', 'receiver')
- """
+class MessageAdmin(admin.ModelAdmin):
+    fields = ('chat', 'text', 'created_at', 'author', 'receiver')
+    list_display = ('text', 'created_at', 'author', 'receiver')
+
 
 
 # Register your models here.
-admin.site.register(Message)
+admin.site.register(Message, MessageAdmin)
+admin.site.register(Chat)
