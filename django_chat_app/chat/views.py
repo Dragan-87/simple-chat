@@ -9,7 +9,3 @@ def index(request):
 
     chatMessages = Message.objects.filter(chat__id=1)
     return render(request, 'chat/index.html', {'messeges': chatMessages})
-
-
-def login(request):
-    pass
