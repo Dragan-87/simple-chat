@@ -9,23 +9,25 @@ function clearForm() {
 }
 
 function checkPasswordMatch() {
-  const username = username.value;
-  const email = email.value;
-  const first_name = first_name.value;
-  const last_name = last_name.value;
-  const password = password.value;
-  const confirmPassword = confirmPassword.value;
-  if (password != confirmPassword || !username || !email || !first_name || !last_name || !password) {
-    document.getElementById('registerButton').disabled = true;
+  registerButton.disabled = true;
+  if (
+    password.value.trim() != confirm_password.value.trim() ||
+    !username.value.trim() ||
+    !email.value.trim() ||
+    !first_name.value.trim() ||
+    !last_name.value.trim() ||
+    !password.value.trim() ||
+    !confirm_password.value.trim()
+  ) {
+    registerButton.disabled = true;
     return false;
   }
-  document.getElementById('registerButton').disabled = false;
+  registerButton.disabled = false;
   return true;
 }
 
 function isMessageTextEmpty() {
-  const chatMsg = document.getElementById('chatMsg').value;
-  if (chatMsg === '') {
+  if (!chatMsg.value.trim()) {
     document.getElementById('sendButton').disabled = true;
     return false;
   }
@@ -63,13 +65,9 @@ async function sendMessage() {
     const data = await JSON.parse(response);
     deleteMsg.remove();
 
-    msgContainer.innerHTML += ` <div><span class="mr-8 gray">${new Date(
+    msgContainer.innerHTML += ` <div><span class="mr-8 gray">${formatDate(
       data.fields.created_at
-    ).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    })}</span> <b>${data.fields.author}</b>: ${data.fields.text}</div>`;
+    )}</span> <b>${data.fields.author}</b>: ${data.fields.text}</div>`;
   } catch (error) {
     console.error('Error:', error);
   }
@@ -83,4 +81,14 @@ async function loadMessagesFromServer() {
   } catch (error) {
     console.error('Error:', error);
   }
+}
+
+function formatDate(date) {
+  const d = new Date(date);
+  const monthName = d.toLocaleString('de-DE', { month: 'short' }).split(' ')[0];
+  const day = d.getDate();
+  const year = d.getFullYear();
+
+  const formattedDate = `${monthName}. ${day}, ${year}`;
+  return formattedDate;
 }

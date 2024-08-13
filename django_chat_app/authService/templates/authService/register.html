@@ -1,6 +1,11 @@
 {% extends "base.html" %} {% block content %}
 <div class="page-content page-content-register">
-  <form class="form-register" action="/register/" method="post">
+  <form
+    class="form-register"
+    action="/register/"
+    onkeyup="checkPasswordMatch()"
+    method="post"
+  >
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield">
       <input
@@ -49,7 +54,6 @@
         id="password"
         name="password"
         placeholder="Password*"
-        onkeyup="checkPasswordMatch()"
       />
       <label class="mdl-textfield__label" for="password">Password</label>
     </div>
@@ -60,7 +64,6 @@
         id="confirm_password"
         name="confirm_password"
         placeholder="Confirm Password*"
-        onkeyup="checkPasswordMatch()"
       />
       <label class="mdl-textfield__label" for="confirm_password"
         >Confirm Password</label
@@ -72,8 +75,9 @@
         id="registerButton"
         class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent button-register"
         type="submit"
+        disabled
       >
-        Button
+        Register
       </button>
       <button
         type="button"

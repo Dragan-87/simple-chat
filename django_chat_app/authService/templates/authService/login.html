@@ -1,38 +1,56 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="page-content page-content-login">
-      {% if request.user.username %}
-      <span
-        >Du bist bereits eingelogt, <a href="/chat/">hier</a> geht es zu den
-        Chats</span
+  {% if request.user.username %}
+  <span
+    >Du bist bereits eingelogt, <a href="/chat/">hier</a> geht es zu den
+    Chats</span
+  >
+  {% else %}
+  <mat-card>
+    <form
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+      "
+      id="loginForm"
+      action="/login/"
+      method="post"
+    >
+      {% csrf_token %}
+      <div class="mdl-textfield mdl-js-textfield">
+        <input
+          class="mdl-textfield__input"
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Username"
+        />
+        <label class="mdl-textfield__label" for="Username">Username</label>
+      </div>
+
+      <div class="mdl-textfield mdl-js-textfield">
+        <input
+          class="mdl-textfield__input"
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+        />
+        <label class="mdl-textfield__label" for="Username">Password</label>
+      </div>
+      <button
+        style="margin-bottom: 12px"
+        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
       >
-      {% else %}
-      <mat-card>
-        <form action="/login/" method="post">
-          {% csrf_token %}
-          <mat-form-field>
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" />
-          </mat-form-field>
-          <mat-form-field>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" />
-          </mat-form-field>
-          <button
-            class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-          >
-            Login
-          </button>
-          {% if loginFail %}
-          <p style="color: red; font-size: 14px">
-            Invalid username or password
-          </p>
-          {% endif %}
-        </form>
-        <span>Hier <a href="/register/">Regestrieren</a></span>
-      </mat-card>
-    </div>
-  </main>
-  {% endif %}
+        Login
+      </button>
+      <span>Hier <a href="/register/">Regestrieren</a></span>
+      {% if loginFail %}
+      <p style="color: red; font-size: 14px">Invalid username or password</p>
+      {% endif %}
+    </form>
+  </mat-card>
 </div>
-{% endblock %}
+{% endif %} {% endblock %}
