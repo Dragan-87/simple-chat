@@ -27,7 +27,7 @@ function isMessageTextEmpty() {
   return true;
 }
 
-function setFormData() {
+function setAllFormData() {
   let form = new FormData();
   let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
   form.append('textmessage', chatMsg.value);
@@ -36,28 +36,26 @@ function setFormData() {
 }
 
 async function sendMessage() {
-  let form = setFormData();
+  let form = setAllFormData();
   let requestOptions = {
     method: 'POST',
     body: form,
   };
+
   msgContainer.innerHTML += ` <div id="deleteMsg"><span class="mr-8 gray">${new Date().toLocaleDateString(
     'en-US',
     { month: 'short', day: 'numeric', year: 'numeric' }
   )}</span> <b>${username.value}</b>: <span class="gray">${
     chatMsg.value
   }</span></div>`;
+
   try {
     const request = await fetch('/chat/', requestOptions);
-    if (!request.ok) {
-      // Log the response text if the request was not successful
-      const errorText = await request.text();
-      console.error('Server Error:', errorText);
-      throw new Error('Server error');
-    }
     const response = await request.json();
+    const data = await JSON.parse(response);
     deleteMsg.remove();
-    msgContainer.innerHTML += ` <div><span class="mr-8 gray">${response.messageCreate}</span> <b>${response.messageAuthor}</b>: ${response.messageText}</div>`;
+
+    msgContainer.innerHTML += ` <div><span class="mr-8 gray">${data['created_at']}</span> <b>${data['author']}</b>: ${data['text']}</div>`;
   } catch (error) {
     console.error('Error:', error);
   }
