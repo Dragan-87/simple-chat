@@ -13,57 +13,11 @@
       href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"
     />
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <script src="{% static 'js/script.js' %}"></script>
   </head>
-  <style>
-    .page-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-top: 50px;
-    }
-
-    .chat-msg {
-      max-width: 376px;
-      width: 100%;
-    }
-
-    .page-content-login {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-top: 50px;
-    }
-
-    .page-content-register {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-top: 50px;
-    }
-
-    .form-register {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .button-register {
-      align-self: flex-end;
-    }
-
-    .button-container {
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: flex-end;
-      gap: 12px;
-      width: 100%;
-    }
-    button {
-      width: fit-content;
-    }
-  </style>
   <body>
     <!-- Always shows a header, even in smaller screens. -->
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">

@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
+from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -23,17 +21,23 @@ def login__view(request):
 
 def register(request):
     if request.method == 'POST':
-        NewUsername = request.POST['username']
-        NewFirst_name = request.POST['first_name']
-        NewLast_name = request.POST['last_name']
-        NewEmail = request.POST['email']
-        NewPassword = request.POST['password']
-        if User.objects.filter(username=NewUsername).exists():
+        if request.POST['username'] or request.POST['first_name'] or request.POST['last_name'] or request.POST['email'] or request.POST['password'] is None:
+            return render(request, 'authService/register.html', {'registerFailed': "Bitte füllen sie alle Felder aus"} )
+        newUsername = request.POST['username']
+        newFirst_name = request.POST['first_name']
+        newLast_name = request.POST['last_name']
+        newEmail = request.POST['email']
+        newPassword = make_password(request.POST['password'])
+        confirm_password = request.POST['confirm_password']
+        if newPassword is not confirm_password:
+            return render(request, 'authService/register.html', {'registerFailed': "Passwort stimmt nicht überein"} )
+        
+        if User.objects.filter(username=newUsername).exists():
             return render(request, 'authService/register.html', {'registerFailed': "Der Nutzer Existiert bereits"} )
 
-        user = User.objects.create(username=NewUsername, first_name=NewFirst_name, last_name=NewLast_name, email=NewEmail, password=NewPassword)
+        user = User.objects.create(username=newUsername, first_name=newFirst_name, last_name=newLast_name, email=newEmail, password=newPassword)
         user.save()
         return render(request, 'authService/login.html')
 
     else:
-        return render(request, 'authService/register.html', {'registerFailed': True})
+        return render(request, 'authService/register.html')

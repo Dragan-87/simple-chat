@@ -8,7 +8,7 @@
         type="text"
         id="username"
         name="username"
-        placeholder="Username"
+        placeholder="Username*"
       />
       <label class="mdl-textfield__label" for="username">Username</label>
     </div>
@@ -18,7 +18,7 @@
         type="text"
         id="first_name"
         name="first_name"
-        placeholder="First Name"
+        placeholder="First Name*"
       />
       <label class="mdl-textfield__label" for="first_name">First Name</label>
     </div>
@@ -28,7 +28,7 @@
         type="text"
         id="last_name"
         name="last_name"
-        placeholder="Last Name"
+        placeholder="Last Name*"
       />
       <label class="mdl-textfield__label" for="last_name">Last Name</label>
     </div>
@@ -38,7 +38,7 @@
         type="email"
         id="email"
         name="email"
-        placeholder="Email"
+        placeholder="Email*"
       />
       <label class="mdl-textfield__label" for="email">Email</label>
     </div>
@@ -48,13 +48,28 @@
         type="password"
         id="password"
         name="password"
-        placeholder="Password"
+        placeholder="Password*"
+        onkeyup="checkPasswordMatch()"
       />
       <label class="mdl-textfield__label" for="password">Password</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input
+        class="mdl-textfield__input"
+        type="password"
+        id="confirm_password"
+        name="confirm_password"
+        placeholder="Confirm Password*"
+        onkeyup="checkPasswordMatch()"
+      />
+      <label class="mdl-textfield__label" for="confirm_password"
+        >Confirm Password</label
+      >
     </div>
     <!-- Accent-colored raised button with ripple -->
     <div class="button-container">
       <button
+        id="registerButton"
         class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent button-register"
         type="submit"
       >
@@ -69,19 +84,10 @@
         Clear
       </button>
     </div>
-    {% if registerFail %}
-    <span>{{registerFail}}</span>
-    {% endif %}
   </form>
+  {% if registerFailed %}
+  <span class="warning">{{registerFailed}}</span>
+  {% endif %}
 </div>
-<script>
-  function clearForm() {
-    document.getElementById('username').value = '';
-    document.getElementById('first_name').value = '';
-    document.getElementById('last_name').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('password').value = '';
-  }
-</script>
 
 {% endblock %}
