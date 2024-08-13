@@ -2,7 +2,7 @@
 <div class="page-content">
   {% if request.user.is_authenticated %}
 
-  <form action="/chat/" method="post">
+  <form onsubmit="sendMessage(); return false" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
       <input
@@ -10,19 +10,33 @@
         name="textmessage"
         type="text"
         id="chatMsg"
+        onkeyup="isMessageTextEmpty()"
       />
       <label class="mdl-textfield__label" for="sample3">Text...</label>
+      <input
+        type="hidden"
+        name="username"
+        id="username"
+        value="{{request.user.username}}"
+      />
     </div>
     <button
+      id="sendButton"
       class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
       type="submit"
+      disabled
     >
       Send
     </button>
   </form>
-  <div class="chat-msg">
+  <div class="chat-msg" id="msgContainer">
     {% for message in messeges %}
-    <div><b>{{message.author}}</b>: {{message.text}}</div>
+    <div>
+      <div>
+        <span class="mr-8 gray">{{message.created_at}}</span>
+        <b>{{message.author}}</b>: {{message.text}}
+      </div>
+    </div>
     {% endfor %}
   </div>
   {% else %}
