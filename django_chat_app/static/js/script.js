@@ -1,6 +1,5 @@
 allMessages = [];
 
-
 function clearForm() {
   document.getElementById('username').value = '';
   document.getElementById('first_name').value = '';
@@ -10,9 +9,13 @@ function clearForm() {
 }
 
 function checkPasswordMatch() {
-  const password = document.getElementById('password').value;
-  const confirmPassword = document.getElementById('confirm_password').value;
-  if (password != confirmPassword) {
+  const username = username.value;
+  const email = email.value;
+  const first_name = first_name.value;
+  const last_name = last_name.value;
+  const password = password.value;
+  const confirmPassword = confirmPassword.value;
+  if (password != confirmPassword || !username || !email || !first_name || !last_name || !password) {
     document.getElementById('registerButton').disabled = true;
     return false;
   }
@@ -72,14 +75,12 @@ async function sendMessage() {
   }
 }
 
-
 async function loadMessagesFromServer() {
-    try {
-        const request = await fetch('/chat/');
-        const response = await request.json();
-        const data = await JSON.parse(response);
-
-    } catch (error) {
-        console.error('Error:', error);
-    }
+  try {
+    const request = await fetch('/chat/');
+    const response = await request.json();
+    const data = await JSON.parse(response);
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
