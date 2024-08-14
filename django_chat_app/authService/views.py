@@ -6,10 +6,16 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import json
 
-
-
-# Create your views here.
 def login__view(request):
+    """
+    View function for handling user login.
+    Args:
+        request (HttpRequest): The HTTP request object.
+    Returns:
+        HttpResponse: The HTTP response object.
+    Raises:
+        None
+    """
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -24,6 +30,17 @@ def login__view(request):
 
 
 def register(request):
+    """
+    Register a new user.
+    Args:
+        request: The HTTP request object.
+    Returns:
+        If the request method is POST and all required fields are provided, returns a JSON response with a success message.
+        If the request method is POST and any required field is missing, returns a JSON response with an error message indicating the missing fields.
+        If the request method is POST and the passwords do not match, returns a JSON response with an error message.
+        If the request method is POST and the username already exists, returns a JSON response with an error message.
+        If the request method is GET, renders the 'register.html' template.
+    """
     if request.method == 'POST':
         if not request.POST['username'] or not request.POST['first_name'] or not request.POST['last_name'] or not request.POST['email'] or not request.POST['password']:
             return JsonResponse({'fields': {'fields_empty': 'Bitte füllen Sie alle Felder aus'}})
@@ -50,6 +67,20 @@ def register(request):
 
 
 def logout_view(request):
+    """
+    Logs out the user and returns a JSON response indicating successful logout.
+
+    Parameters:
+    - request: The HTTP request object.
+
+    Returns:
+    - A JSON response with the following structure:
+        {
+            'fields': {
+                'logout': True
+            }
+        }
+    """
     if request.method == 'POST':
         token = request.POST.get('csrfmiddlewaretoken')
         logout(request)
