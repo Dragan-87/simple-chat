@@ -92,3 +92,82 @@ function formatDate(date) {
   const formattedDate = `${monthName}. ${day}, ${year}`;
   return formattedDate;
 }
+
+async function login() {
+  let form = new FormData();
+  let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+  form.append('username', username.value);
+  form.append('password', password.value);
+  form.append('csrfmiddlewaretoken', token);
+
+  let requestOptions = {
+    method: 'POST',
+    body: form,
+  };
+
+  try {
+    request = await fetch('/login/', requestOptions);
+    response = await request.json();
+    data = await JSON.parse(response);
+
+    document.getElementById('loginContainer').innerHTML +=
+      loginSuccessHtmlTemplate(data);
+    setTimeout(() => {
+      window.location.href = '/chat/';
+    }, 500);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function register() {
+  let formData = setRegisterFormData();
+  let requestOptions = {
+    method: 'POST',
+    body: formData,
+  };
+
+  try {
+    request = await fetch('/register/', requestOptions);
+    response = await request.json();
+    data = JSON.parse(response);
+
+    if (data.fields && data.fields.wrong_password) {
+      messageContainer.innerHTML = '';
+      messageContainer.innerHTML += requestFaildHTMLTemplate(
+        data.fields.wrong_password
+      );
+      return;
+    }
+
+    if (data.fields && data.fields.user_exists) {
+      messageContainer.innerHTML = '';
+      messageContainer.innerHTML += requestFaildHTMLTemplate(
+        data.fields.user_exists
+      );
+      return;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function requestFaildHTMLTemplate(data) {
+  return `<div class="failed slideInFromLeft">${data}</div>`;
+}
+
+function setRegisterFormData() {
+  let form = new FormData();
+  form.append('username', document.getElementById('username').value.trim());
+  form.append('first_name', document.getElementById('first_name').value.trim());
+  form.append('last_name', document.getElementById('last_name').value.trim());
+  form.append('email', document.getElementById('email').value.trim());
+  form.append('password', document.getElementById('password').value.trim());
+  form.append(
+    'confirm_password',
+    document.getElementById('confirm_password').value.trim()
+  );
+  let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+  form.append('csrfmiddlewaretoken', token);
+  return form;
+}

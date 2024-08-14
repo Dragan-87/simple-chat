@@ -1,23 +1,12 @@
-{% extends "base.html" %} {% block content %}
-<div class="page-content page-content-login">
-  {% if request.user.username %}
+{% extends "base.html" %} {% block content %} {% if request.user.username %}
+<div class="page-content">
   <span
     >Du bist bereits eingelogt, <a href="/chat/">hier</a> geht es zu den
     Chats</span
   >
   {% else %}
-  <mat-card>
-    <form
-      style="
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 12px;
-      "
-      id="loginForm"
-      action="/login/"
-      method="post"
-    >
+  <mat-card class="page-content-login" id="loginContainer">
+    <form id="loginForm" onsubmit="login(); return false" method="post">
       {% csrf_token %}
       <div class="mdl-textfield mdl-js-textfield">
         <input

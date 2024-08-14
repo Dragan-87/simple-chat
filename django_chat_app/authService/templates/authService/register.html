@@ -1,9 +1,9 @@
 {% extends "base.html" %} {% block content %}
 <div class="page-content page-content-register">
   <form
-    class="form-register"
-    action="/register/"
     onkeyup="checkPasswordMatch()"
+    class="form-register"
+    onsubmit="register(); return false"
     method="post"
   >
     {% csrf_token %}
@@ -92,6 +92,6 @@
   {% if registerFailed %}
   <span class="warning">{{registerFailed}}</span>
   {% endif %}
+  <div id="messageContainer"></div>
 </div>
-
 {% endblock %}

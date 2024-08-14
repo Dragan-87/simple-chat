@@ -25,5 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', index),
     path('login/', login__view),
-    path('register/', register)
+    path('register/', register),
 ]
