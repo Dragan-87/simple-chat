@@ -92,7 +92,7 @@ button {
   align-items: flex-end;
 }
 
-.failed {
+.container {
   margin: 24px 0 0 0;
   padding: 20px;
   background-color: #3f51b5;

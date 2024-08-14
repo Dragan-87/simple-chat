@@ -107,8 +107,7 @@ async function login() {
 
   try {
     request = await fetch('/login/', requestOptions);
-    response = await request.json();
-    data = await JSON.parse(response);
+    data = await request.json();
 
     document.getElementById('loginContainer').innerHTML +=
       loginSuccessHtmlTemplate(data);
@@ -120,40 +119,67 @@ async function login() {
   }
 }
 
+/**
+ * Registers a user by sending a POST request to the '/register/' endpoint.
+ *
+ * @async
+ * @function register
+ * @returns {Promise<void>} A promise that resolves when the registration is complete.
+ */
 async function register() {
   let formData = setRegisterFormData();
+  clearRegisterFrom();
   let requestOptions = {
     method: 'POST',
     body: formData,
   };
 
   try {
-    request = await fetch('/register/', requestOptions);
-    response = await request.json();
-    data = JSON.parse(response);
+    const response = await fetch('/register/', requestOptions);
+    const data = await response.json();
 
-    if (data.fields && data.fields.wrong_password) {
-      messageContainer.innerHTML = '';
-      messageContainer.innerHTML += requestFaildHTMLTemplate(
-        data.fields.wrong_password
-      );
-      return;
-    }
+    handleSuccessfulyRegister(data);
 
-    if (data.fields && data.fields.user_exists) {
-      messageContainer.innerHTML = '';
-      messageContainer.innerHTML += requestFaildHTMLTemplate(
-        data.fields.user_exists
-      );
-      return;
-    }
+    handleRegisterErrors(data);
   } catch (e) {
     console.log(e);
   }
 }
 
-function requestFaildHTMLTemplate(data) {
-  return `<div class="failed slideInFromLeft">${data}</div>`;
+function handleRegisterErrors(data) {
+  if (data.fields && data.fields.wrong_password) {
+    messageContainer.innerHTML = '';
+    messageContainer.innerHTML += requestHTMLTemplate(
+      data.fields.wrong_password
+    );
+    setTimeout(() => {
+      messageContainer.innerHTML = '';
+    }, 2000);
+    return;
+  }
+
+  if (data.fields && data.fields.user_exists) {
+    messageContainer.innerHTML = '';
+    messageContainer.innerHTML += requestHTMLTemplate(data.fields.user_exists);
+    setTimeout(() => {
+      messageContainer.innerHTML = '';
+    }, 2000);
+    return;
+  }
+}
+
+function handleSuccessfulyRegister(data) {
+  if (data.fields && data.fields.username) {
+    messageContainer.innerHTML = '';
+    messageContainer.innerHTML += requestHTMLTemplate(data.fields.username);
+    setTimeout(() => {
+      window.location.href = '/login/';
+    }, 1000);
+  }
+}
+
+function requestHTMLTemplate(data) {
+  return `<div class="container slideInFromLeft">${data}</div>`;
 }
 
 function setRegisterFormData() {
@@ -170,4 +196,14 @@ function setRegisterFormData() {
   let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
   form.append('csrfmiddlewaretoken', token);
   return form;
+}
+
+function clearRegisterFrom() {
+  document.getElementById('username').value = '';
+  document.getElementById('first_name').value = '';
+  document.getElementById('last_name').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('password').value = '';
+  document.getElementById('password').value = '';
+  document.getElementById('confirm_password').value = '';
 }

@@ -48,6 +48,6 @@ def register(request):
         newPassword = make_password(newPassword)
         user = User.objects.create(username=newUsername, first_name=newFirst_name, last_name=newLast_name, email=newEmail, password=newPassword)
         user.save()
-        return JsonResponse({'user': {'username': user.username, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}})
+        return JsonResponse({'fields': {'username': 'Registrierung erfolgreich: ' + newUsername }})
     
     return render(request, 'authService/register.html')
