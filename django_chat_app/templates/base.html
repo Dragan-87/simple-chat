@@ -31,7 +31,7 @@
           <!-- Add spacer, to align navigation to the right -->
           <div class="mdl-layout-spacer"></div>
           <!-- Navigation. We hide it in small screens. -->
-          <nav class="mdl-navigation mdl-layout--large-screen-only">
+          <nav class="sdl-navigation sdl-layout--large-screen-only">
             {% if request.user.is_authenticated %}
             <form onsubmit="logout(); return false">
               {% csrf_token %}
@@ -43,9 +43,6 @@
       </header>
       <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Chatroom</span>
-        <nav class="mdl-navigation">
-          <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
       </div>
       <main class="mdl-layout__content">
         {% block content %} {% endblock %}
