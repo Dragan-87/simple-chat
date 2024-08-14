@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from chat.views import index
-from authService.views import login__view, register
+from authService.views import login__view, register, logout_view
 
 
 urlpatterns = [
@@ -26,4 +26,5 @@ urlpatterns = [
     path('chat/', index),
     path('login/', login__view),
     path('register/', register),
+    path('logout/', logout_view),
 ]

@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
-from django.core import serializers
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
 import json
+
 
 
 # Create your views here.
@@ -15,16 +14,13 @@ def login__view(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        if user is not None:
+        if user != None:
             login(request, user)
-            serializerd_obj = serializers.serialize('json', [user])
-            return JsonResponse(serializerd_obj[1:-1], safe=False)
-
+            return JsonResponse({'fields': {'username': 'Login erfolgreich: ' + username }})
         else:
-            print("login failed")
-            return render(request, 'authService/login.html', {'loginFail': True})
-    else:
-        return render(request, "authService/login.html")
+            return JsonResponse({'fields': {'wrong_password': 'Benutzername oder Passwort falsch'}})
+    
+    return render(request, "authService/login.html")
 
 
 def register(request):
@@ -51,3 +47,10 @@ def register(request):
         return JsonResponse({'fields': {'username': 'Registrierung erfolgreich: ' + newUsername }})
     
     return render(request, 'authService/register.html')
+
+
+def logout_view(request):
+    if request.method == 'POST':
+        token = request.POST.get('csrfmiddlewaretoken')
+        logout(request)
+        return JsonResponse({'fields': {'logout': True}})

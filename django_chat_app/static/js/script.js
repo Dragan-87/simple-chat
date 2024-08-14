@@ -1,5 +1,3 @@
-allMessages = [];
-
 function clearForm() {
   document.getElementById('username').value = '';
   document.getElementById('first_name').value = '';
@@ -73,16 +71,12 @@ async function sendMessage() {
   }
 }
 
-async function loadMessagesFromServer() {
-  try {
-    const request = await fetch('/chat/');
-    const response = await request.json();
-    const data = await JSON.parse(response);
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
+/**
+ * Formats a given date into a string representation.
+ *
+ * @param {Date} date - The date to be formatted.
+ * @returns {string} The formatted date string.
+ */
 function formatDate(date) {
   const d = new Date(date);
   const monthName = d.toLocaleString('de-DE', { month: 'short' }).split(' ')[0];
@@ -109,16 +103,26 @@ async function login() {
     request = await fetch('/login/', requestOptions);
     data = await request.json();
 
-    document.getElementById('loginContainer').innerHTML +=
-      loginSuccessHtmlTemplate(data);
-    setTimeout(() => {
-      window.location.href = '/chat/';
-    }, 500);
+    if (data.fields && data.fields.username) {
+      document.getElementById('loginContainer').innerHTML +=
+        requestHTMLTemplate(data.fields.username);
+      setTimeout(() => {
+        window.location.href = '/chat/';
+      }, 500);
+    }
+
+    if (data.fields && data.fields.wrong_password) {
+      loginContainer.innerHTML += requestHTMLTemplate(
+        data.fields.wrong_password
+      );
+      setTimeout(() => {
+        loginContainer.innerHTML = '';
+      }, 1000);
+    }
   } catch (error) {
     console.error('Error:', error);
   }
 }
-
 /**
  * Registers a user by sending a POST request to the '/register/' endpoint.
  *
@@ -206,4 +210,28 @@ function clearRegisterFrom() {
   document.getElementById('password').value = '';
   document.getElementById('password').value = '';
   document.getElementById('confirm_password').value = '';
+}
+
+async function logout() {
+  let form = new FormData();
+  let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+  form.append('csrfmiddlewaretoken', token);
+
+  let requestOptions = {
+    method: 'POST',
+    body: form,
+  };
+
+  try {
+    const response = await fetch('/logout/', requestOptions);
+    const data = await response.json();
+
+    if (data.fields.logout) {
+      window.location.href = '/login/';
+    } else {
+      console.error('Logout failed');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
