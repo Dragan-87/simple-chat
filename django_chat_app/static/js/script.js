@@ -1,3 +1,18 @@
+function chatStringHTMLTemplate(username, chatMsg) {
+  return ` <div id="deleteMsg"><span class="mr-8 gray">${new Date().toLocaleDateString(
+    'en-US',
+    { month: 'short', day: 'numeric', year: 'numeric' }
+  )}</span> <b>${username.value}</b>: <span class="gray">${
+    chatMsg.value
+  }</span></div>`;
+}
+
+function setChatStringWithJson(data) {
+  return ` <div><span class="mr-8 gray">${formatDate(
+      data.fields.created_at
+    )}</span> <b>${data.fields.author}</b>: ${data.fields.text}</div>`;
+}
+
 /**
  * Clears the form by resetting the values of the input fields.
  */
@@ -20,6 +35,17 @@ function clearRegisterFrom() {
   document.getElementById('password').value = '';
   document.getElementById('password').value = '';
   document.getElementById('confirm_password').value = '';
+}
+
+function loginFormData() {
+    let form = new FormData();
+    let token = document.querySelector(
+      'input[name="csrfmiddlewaretoken"]'
+    ).value;
+    form.append('username', username.value);
+    form.append('password', password.value);
+    form.append('csrfmiddlewaretoken', token);
+    return form
 }
 
 /**
@@ -204,22 +230,14 @@ async function sendMessage() {
     body: form,
   };
 
-  msgContainer.innerHTML += ` <div id="deleteMsg"><span class="mr-8 gray">${new Date().toLocaleDateString(
-    'en-US',
-    { month: 'short', day: 'numeric', year: 'numeric' }
-  )}</span> <b>${username.value}</b>: <span class="gray">${
-    chatMsg.value
-  }</span></div>`;
-
+  msgContainer.innerHTML += chatStringHTMLTemplate(username, chatMsg);
+  
   try {
     const request = await fetch('/chat/', requestOptions);
     const response = await request.json();
     const data = await JSON.parse(response);
     deleteMsg.remove();
-
-    msgContainer.innerHTML += ` <div><span class="mr-8 gray">${formatDate(
-      data.fields.created_at
-    )}</span> <b>${data.fields.author}</b>: ${data.fields.text}</div>`;
+    msgContainer.innerHTML += setChatStringWithJson(data)
   } catch (error) {
     console.error('Error:', error);
   }
@@ -234,11 +252,7 @@ async function sendMessage() {
  * @throws {Error} If an error occurs during the login request.
  */
 async function login() {
-  let form = new FormData();
-  let token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-  form.append('username', username.value);
-  form.append('password', password.value);
-  form.append('csrfmiddlewaretoken', token);
+  let form = loginFormData()
 
   let requestOptions = {
     method: 'POST',

@@ -6,6 +6,9 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 import json
 
+
+
+
 def login__view(request):
     """
     View function for handling user login.
@@ -28,6 +31,25 @@ def login__view(request):
     
     return render(request, "authService/login.html")
 
+def set_user_data(request):
+    newUsername = request.POST['username']
+    newFirst_name = request.POST['first_name']
+    newLast_name = request.POST['last_name']
+    newEmail = request.POST['email']
+    newPassword = request.POST['password']
+    confirm_password = request.POST['confirm_password']
+    
+    user_data = {
+        'username': newUsername,
+        'first_name': newFirst_name,
+        'last_name': newLast_name,
+        'email': newEmail,
+        'password': newPassword,
+        'confirm_password': confirm_password
+    }
+    
+    return user_data
+
 
 def register(request):
     """
@@ -45,23 +67,18 @@ def register(request):
         if not request.POST['username'] or not request.POST['first_name'] or not request.POST['last_name'] or not request.POST['email'] or not request.POST['password']:
             return JsonResponse({'fields': {'fields_empty': 'Bitte füllen Sie alle Felder aus'}})
         
-        newUsername = request.POST['username']
-        newFirst_name = request.POST['first_name']
-        newLast_name = request.POST['last_name']
-        newEmail = request.POST['email']
-        newPassword = request.POST['password']
-        confirm_password = request.POST['confirm_password']
+        user_data = set_user_data(request)
 
-        if newPassword != confirm_password:
+        if user_data['password'] != user_data['confirm_password']:
             return JsonResponse({'fields': {'wrong_password': 'Passwörter stimmen nicht überein'}})
         
-        if User.objects.filter(username=newUsername).exists():
+        if User.objects.filter(username=user_data['username']).exists():
             return JsonResponse({'fields': {'user_exists': 'Benutzername existiert bereits'}})
 
-        newPassword = make_password(newPassword)
-        user = User.objects.create(username=newUsername, first_name=newFirst_name, last_name=newLast_name, email=newEmail, password=newPassword)
+        newPassword = make_password(user_data['password'])
+        user = User.objects.create(username=user_data['username'], first_name=user_data['first_name'], last_name=user_data['last_name'], email=user_data['email'], password=newPassword)
         user.save()
-        return JsonResponse({'fields': {'username': 'Registrierung erfolgreich: ' + newUsername }})
+        return JsonResponse({'fields': {'username': 'Registrierung erfolgreich: ' + user_data['username']}})
     
     return render(request, 'authService/register.html')
 
