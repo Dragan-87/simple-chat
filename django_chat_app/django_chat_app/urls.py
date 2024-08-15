@@ -23,8 +23,8 @@ from authService.views import login__view, register, logout_view
 urlpatterns = [
     path('', login__view),
     path('admin/', admin.site.urls),
-    path('chat/', index),
-    path('login/', login__view),
-    path('register/', register),
-    path('logout/', logout_view),
+    path('chat/', index, name='chat'),
+    path('login/', login__view, name='login'),
+    path('register/', register, name='register'),
+    path('logout/', logout_view, name='logout'),
 ]

@@ -231,7 +231,7 @@ async function sendMessage() {
   };
 
   msgContainer.innerHTML += chatStringHTMLTemplate(username, chatMsg);
-  
+
   try {
     const request = await fetch('/chat/', requestOptions);
     const response = await request.json();

@@ -1,38 +1,21 @@
 {% extends "base.html" %} {% block content %} {% if request.user.username %}
 <div class="page-content">
-  <span
-    >Du bist bereits eingelogt, <a href="/chat/">hier</a> geht es zu den
-    Chats</span
-  >
+  <span>Du bist bereits eingelogt, <a href="/chat/">hier</a> geht es zu den
+    Chats</span>
   {% else %}
-  <mat-card class="page-content-login" id="loginContainer">
+  <mat-card class="page-content-login">
     <form id="loginForm" onsubmit="login(); return false" method="post">
       {% csrf_token %}
       <div class="mdl-textfield mdl-js-textfield">
-        <input
-          class="mdl-textfield__input"
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Username"
-        />
+        <input class="mdl-textfield__input" type="text" id="username" name="username" placeholder="Username" />
         <label class="mdl-textfield__label" for="Username">Username</label>
       </div>
 
       <div class="mdl-textfield mdl-js-textfield">
-        <input
-          class="mdl-textfield__input"
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-        />
+        <input class="mdl-textfield__input" type="password" id="password" name="password" placeholder="Password" />
         <label class="mdl-textfield__label" for="Username">Password</label>
       </div>
-      <button
-        style="margin-bottom: 12px"
-        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-      >
+      <button style="margin-bottom: 12px" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
         Login
       </button>
       <span>Hier <a href="/register/">Regestrieren</a></span>
@@ -41,5 +24,8 @@
       {% endif %}
     </form>
   </mat-card>
+  <div id="loginContainer">
+
+  </div>
 </div>
 {% endif %} {% endblock %}
