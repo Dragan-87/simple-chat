@@ -4,7 +4,7 @@
     Chats</span>
   {% else %}
   <mat-card class="page-content-login">
-    <form id="loginForm" onsubmit="login(); return false" method="post">
+    <form id="loginForm" onkeyup="toggleLoginButton()" onsubmit="login(); return false" method="post">
       {% csrf_token %}
       <div class="mdl-textfield mdl-js-textfield">
         <input class="mdl-textfield__input" type="text" id="username" name="username" placeholder="Username" />
@@ -15,7 +15,8 @@
         <input class="mdl-textfield__input" type="password" id="password" name="password" placeholder="Password" />
         <label class="mdl-textfield__label" for="Username">Password</label>
       </div>
-      <button style="margin-bottom: 12px" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+      <button id="loginButton" style="margin-bottom: 12px"
+        class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
         Login
       </button>
       <span>Hier <a href="/register/">Regestrieren</a></span>
@@ -23,9 +24,9 @@
       <p style="color: red; font-size: 14px">Invalid username or password</p>
       {% endif %}
     </form>
-  </mat-card>
-  <div id="loginContainer">
+    <div id="loginContainer">
 
-  </div>
+    </div>
+  </mat-card>
 </div>
 {% endif %} {% endblock %}

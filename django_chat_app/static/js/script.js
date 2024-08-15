@@ -2,15 +2,14 @@ function chatStringHTMLTemplate(username, chatMsg) {
   return ` <div id="deleteMsg"><span class="mr-8 gray">${new Date().toLocaleDateString(
     'en-US',
     { month: 'short', day: 'numeric', year: 'numeric' }
-  )}</span> <b>${username.value}</b>: <span class="gray">${
-    chatMsg.value
-  }</span></div>`;
+  )}</span> <b>${username.value}</b>: <span class="gray">${chatMsg.value
+    }</span></div>`;
 }
 
 function setChatStringWithJson(data) {
   return ` <div><span class="mr-8 gray">${formatDate(
-      data.fields.created_at
-    )}</span> <b>${data.fields.author}</b>: ${data.fields.text}</div>`;
+    data.fields.created_at
+  )}</span> <b>${data.fields.author}</b>: ${data.fields.text}</div>`;
 }
 
 /**
@@ -38,14 +37,14 @@ function clearRegisterFrom() {
 }
 
 function loginFormData() {
-    let form = new FormData();
-    let token = document.querySelector(
-      'input[name="csrfmiddlewaretoken"]'
-    ).value;
-    form.append('username', username.value);
-    form.append('password', password.value);
-    form.append('csrfmiddlewaretoken', token);
-    return form
+  let form = new FormData();
+  let token = document.querySelector(
+    'input[name="csrfmiddlewaretoken"]'
+  ).value;
+  form.append('username', username.value);
+  form.append('password', password.value);
+  form.append('csrfmiddlewaretoken', token);
+  return form
 }
 
 /**
@@ -309,4 +308,17 @@ async function register() {
   } catch (e) {
     console.log(e);
   }
+}
+
+function toLoginPage() {
+  window.location.href = '/login/';
+}
+
+function toggleLoginButton() {
+  
+  if (username.value.trim() && password.value.trim()) {
+    loginButton.disabled = false;
+    return;
+  }
+  loginButton.disabled = true;
 }

@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-  padding: 12px;
+  padding: 24px;
 }
 
 .chat-msg {
@@ -28,6 +28,7 @@
   flex-direction: column;
   align-items: center;
 }
+
 .button-register {
   align-self: flex-end;
 }
@@ -39,6 +40,7 @@
   gap: 12px;
   width: 100%;
 }
+
 button {
   width: fit-content;
 }
@@ -97,6 +99,7 @@ button {
 }
 
 .container {
+  max-width: fit-content;
   margin: 24px 0 0 0;
   padding: 20px;
   background-color: #3f51b5;
@@ -110,12 +113,15 @@ button {
     transform: translateX(300px);
     opacity: 0;
   }
+
   25% {
     opacity: 0;
   }
+
   75% {
     opacity: 1;
   }
+
   100% {
     transform: translateX(0);
     opacity: 1;
@@ -136,6 +142,32 @@ button {
   background-color: unset;
   color: white;
   cursor: pointer;
+}
+
+.back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+  outline: none;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back-btn:hover {
+  background-color: #303f9f;
+}
+
+.back-btn:active {
+  background-color: #1a237e;
+  box-shadow: 0px 5px 5px 0rem rgba(63, 81, 181, 0.5);
 }
 
 @media screen and (max-width: 600px) {
