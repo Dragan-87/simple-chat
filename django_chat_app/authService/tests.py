@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 import json
 
 
-class TestLogout(TestCase):
+class TestAuth(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='test_user', password='asdasd')
