@@ -1,12 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.http import JsonResponse
-from django.contrib.auth.models import User
-import json
-
-
+from .functions import set_user_data
 
 
 def login__view(request):
@@ -28,28 +25,8 @@ def login__view(request):
             return JsonResponse({'fields': {'username': 'Login erfolgreich: ' + username }})
         else:
             return JsonResponse({'fields': {'wrong_password': 'Benutzername oder Passwort falsch'}})
-    
+
     return render(request, "authService/login.html")
-
-def set_user_data(request):
-    newUsername = request.POST['username']
-    newFirst_name = request.POST['first_name']
-    newLast_name = request.POST['last_name']
-    newEmail = request.POST['email']
-    newPassword = request.POST['password']
-    confirm_password = request.POST['confirm_password']
-    
-    user_data = {
-        'username': newUsername,
-        'first_name': newFirst_name,
-        'last_name': newLast_name,
-        'email': newEmail,
-        'password': newPassword,
-        'confirm_password': confirm_password
-    }
-    
-    return user_data
-
 
 def register(request):
     """
@@ -66,12 +43,12 @@ def register(request):
     if request.method == 'POST':
         if not request.POST['username'] or not request.POST['first_name'] or not request.POST['last_name'] or not request.POST['email'] or not request.POST['password']:
             return JsonResponse({'fields': {'fields_empty': 'Bitte füllen Sie alle Felder aus'}})
-        
+
         user_data = set_user_data(request)
 
         if user_data['password'] != user_data['confirm_password']:
             return JsonResponse({'fields': {'wrong_password': 'Passwörter stimmen nicht überein'}})
-        
+
         if User.objects.filter(username=user_data['username']).exists():
             return JsonResponse({'fields': {'user_exists': 'Benutzername existiert bereits'}})
 
@@ -79,7 +56,7 @@ def register(request):
         user = User.objects.create(username=user_data['username'], first_name=user_data['first_name'], last_name=user_data['last_name'], email=user_data['email'], password=newPassword)
         user.save()
         return JsonResponse({'fields': {'username': 'Registrierung erfolgreich: ' + user_data['username']}})
-    
+
     return render(request, 'authService/register.html')
 
 
@@ -99,6 +76,6 @@ def logout_view(request):
         }
     """
     if request.method == 'POST':
-        token = request.POST.get('csrfmiddlewaretoken')
+        ken = request.POST.get('csrfmiddlewaretoken')
         logout(request)
         return JsonResponse({'fields': {'logout': True}})
